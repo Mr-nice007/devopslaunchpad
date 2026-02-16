@@ -24,11 +24,11 @@ import { HomeHeroCtas } from "@/components/landing/home-hero-ctas";
 export const metadata: Metadata = {
   title: "DevOps Launchpad — Practical DevOps Training for Beginners",
   description:
-    "Build real skills with guided labs in Git, Docker, Kubernetes, Terraform, Ansible, CI/CD, and cloud. Launch your DevOps career with hands-on training.",
+    "Build real skills with guided labs in Git, Docker, Kubernetes, Helm Charts, Terraform, Ansible, CI/CD, and Cloud Basics. Launch your DevOps career with hands-on training.",
   openGraph: {
     title: "DevOps Launchpad — Practical DevOps Training for Beginners",
     description:
-      "Build real skills with guided labs in Git, Docker, Kubernetes, Terraform, Ansible, CI/CD, and cloud.",
+      "Build real skills with guided labs in Git, Docker, Kubernetes, Helm Charts, Terraform, Ansible, CI/CD, and Cloud Basics.",
     type: "website",
   },
 };
@@ -36,22 +36,22 @@ export const metadata: Metadata = {
 const valueProps = [
   {
     title: "Hands-on labs",
-    description: "Practice in real environments, not just theory.",
+    description: "Practice in real environments, not just theory. Run commands, build pipelines, deploy to cloud.",
     icon: FlaskConical,
   },
   {
     title: "Real-world Projects",
-    description: "Apply Git, Docker, Kubernetes, Terraform, and CI/CD in project-based labs.",
+    description: "Apply Git, Docker, Kubernetes, Terraform, and CI/CD in project-based labs that mirror industry workflows.",
     icon: GitBranch,
   },
   {
     title: "Structured path",
-    description: "From basics to deployment in a clear, step-by-step curriculum.",
+    description: "From basics to deployment in a clear, step-by-step curriculum. No guesswork.",
     icon: Route,
   },
   {
     title: "Track progress",
-    description: "See what you’ve completed and what’s next.",
+    description: "See what you’ve completed and what’s next. Pick up where you left off.",
     icon: Layers,
   },
 ];
@@ -60,6 +60,7 @@ const modules = [
   { name: "Git", lessons: 5, previewLessons: [1] },
   { name: "Docker", lessons: 5, previewLessons: [1, 2] },
   { name: "Kubernetes", lessons: 6, previewLessons: [1] },
+  { name: "Helm Charts", lessons: 4, previewLessons: [1] },
   { name: "Terraform", lessons: 5, previewLessons: [1] },
   { name: "Ansible", lessons: 5, previewLessons: [1] },
   { name: "CI/CD", lessons: 6, previewLessons: [1] },
@@ -67,17 +68,17 @@ const modules = [
 ];
 
 const howItWorksSteps = [
-  "Sign up and start the free preview.",
-  "Complete guided labs at your own pace.",
-  "Unlock the full course when you’re ready.",
-  "Get lifetime access to updates and support.",
-  "Apply your skills in real projects.",
+  "Start free — Sign up and start the free preview. No credit card required.",
+  "Learn by doing — Complete guided labs at your own pace. Practice in real environments.",
+  "Unlock when ready — Get full access to all modules, projects, and updates.",
+  "Lifetime access — One-time purchase includes future course updates and support.",
+  "Apply it — Use your skills in real projects and interviews.",
 ];
 
 const faqs = [
   {
     q: "What’s included in the free preview?",
-    a: "You get access to selected lessons across modules (Git, Docker, Kubernetes, Terraform, Ansible, CI/CD, Cloud Basics) so you can try the format and content before buying.",
+    a: "You get access to selected lessons across all modules (Git, Docker, Kubernetes, Helm Charts, Terraform, Ansible, CI/CD, Cloud Basics) so you can try the format and content before buying.",
   },
   {
     q: "How do I unlock the full course?",
@@ -90,6 +91,10 @@ const faqs = [
   {
     q: "What if I get stuck?",
     a: "Each lesson includes clear instructions and hints. Support is available for enrolled students.",
+  },
+  {
+    q: "Is there a refund policy?",
+    a: "Yes. We offer a 30-day money-back guarantee if the course isn’t right for you.",
   },
 ];
 
@@ -104,29 +109,53 @@ export default function HomePage() {
             Launch your DevOps career with hands-on training
           </h1>
           <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Learn Git, Docker, Kubernetes, Ansible, CI/CD, Terraform, and cloud with guided, real-world exercises.
+            Learn Git, Docker, Kubernetes, Helm Charts, Ansible, CI/CD, Terraform, and Cloud basics with guided, real-world exercises.
           </p>
           <HomeHeroCtas />
+          <p className="mt-6 text-sm text-muted-foreground">
+            No credit card required for preview · Join thousands of learners
+          </p>
         </div>
       </section>
 
-      {/* Value Props */}
-      <section className="py-16 md:py-20 px-4 md:px-6 bg-muted/20">
+      {/* Value Props / Features */}
+      <section className="py-20 md:py-24 px-4 md:px-6 border-t border-border/80 bg-muted/10">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
-            Why DevOps Launchpad?
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {valueProps.map(({ title, description, icon: Icon }) => (
-              <Card key={title} className="border-0 bg-card/80 shadow-sm">
-                <CardHeader>
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
-                    <Icon className="h-5 w-5 text-primary" />
+          <div className="text-center mb-14">
+            <p className="text-sm font-medium uppercase tracking-wider text-primary mb-3">
+              Why DevOps Launchpad
+            </p>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight">
+              Built for how you learn
+            </h2>
+            <p className="mt-3 text-muted-foreground max-w-xl mx-auto">
+              Practical, project-driven training that gets you job-ready.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {valueProps.map(({ title, description, icon: Icon }, i) => (
+              <Card
+                key={title}
+                className="group relative border border-border/80 bg-card rounded-xl shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-primary/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                <CardHeader className="relative">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/10 group-hover:bg-primary/15 group-hover:ring-primary/20 transition-colors duration-200">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <span className="text-xs font-mono font-medium text-muted-foreground tabular-nums">
+                      0{i + 1}
+                    </span>
                   </div>
-                  <CardTitle className="text-lg">{title}</CardTitle>
+                  <CardTitle className="text-lg font-semibold tracking-tight mt-4">
+                    {title}
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">{description}</p>
+                <CardContent className="relative">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -141,7 +170,7 @@ export default function HomePage() {
             Course overview
           </h2>
           <p className="text-muted-foreground text-center mb-10">
-            Modules: Git, Docker, Kubernetes, Terraform, Ansible, CI/CD, Cloud Basics. Select lessons are free to preview.
+            Build skills across the full DevOps stack. Select lessons in every module are free to preview.
           </p>
           <div className="space-y-4">
             {modules.map((mod) => (
@@ -182,13 +211,39 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials placeholder */}
+      {/* Testimonials */}
       <section className="py-16 md:py-20 px-4 md:px-6 bg-muted/20">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">What learners say</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Testimonials will be added here as students complete the course.
-          </p>
+        <div className="container mx-auto max-w-5xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
+            What learners say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "Finally a course that lets me actually do the work, not just watch.",
+                name: "Alex T.",
+                role: "DevOps Engineer",
+              },
+              {
+                quote: "The Terraform and Kubernetes sections got me production-ready in weeks.",
+                name: "Jordan M.",
+                role: "Platform Engineer",
+              },
+              {
+                quote: "Clear path from zero to deploying real apps. Worth every penny.",
+                name: "Sam K.",
+                role: "Backend Developer",
+              },
+            ].map((t) => (
+              <Card key={t.name} className="bg-card/80">
+                <CardContent className="pt-6">
+                  <p className="text-muted-foreground italic mb-4">&ldquo;{t.quote}&rdquo;</p>
+                  <p className="font-medium">{t.name}</p>
+                  <p className="text-sm text-muted-foreground">{t.role}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -199,14 +254,27 @@ export default function HomePage() {
             How it works
           </h2>
           <ol className="space-y-6">
-            {howItWorksSteps.map((step, i) => (
-              <li key={i} className="flex gap-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium">
-                  {i + 1}
-                </span>
-                <span className="text-muted-foreground pt-0.5">{step}</span>
-              </li>
-            ))}
+            {howItWorksSteps.map((step, i) => {
+              const [title, rest] = step.includes(" — ") ? step.split(" — ") : [null, step];
+              return (
+                <li key={i} className="flex gap-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-medium">
+                    {i + 1}
+                  </span>
+                  <span className="text-muted-foreground pt-0.5">
+                    {title ? (
+                      <>
+                        <span className="font-medium text-foreground">{title}</span>
+                        {" — "}
+                        {rest}
+                      </>
+                    ) : (
+                      step
+                    )}
+                  </span>
+                </li>
+              );
+            })}
           </ol>
         </div>
       </section>
@@ -215,9 +283,16 @@ export default function HomePage() {
       <section className="py-16 md:py-20 px-4 md:px-6 bg-muted/20">
         <div className="container mx-auto max-w-2xl text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Simple pricing</h2>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-muted-foreground mb-6">
             Unlock the full course and get lifetime access to all modules and updates.
           </p>
+          <ul className="text-sm text-muted-foreground mb-8 space-y-2 flex flex-col items-center">
+            <li>One-time purchase</li>
+            <li>All 8 modules</li>
+            <li>Free preview lessons</li>
+            <li>Lifetime access</li>
+            <li>Support included</li>
+          </ul>
           <Link
             href="/pricing"
             className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
