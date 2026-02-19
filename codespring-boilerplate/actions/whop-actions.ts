@@ -2,7 +2,7 @@
 
 import { getProfileByUserId, updateProfile, updateProfileByWhopUserId, getProfileByEmail, createProfile, deleteProfileById } from "@/db/queries/profiles-queries";
 import { whopApp } from "@/lib/whop";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 import { getPendingProfileByEmail, markPendingProfileAsClaimed, deletePendingProfile } from "@/db/queries/pending-profiles-queries";
 
@@ -107,8 +107,8 @@ export const manageWhopMembershipStatusChange = async (
 
 // Check if the current user can access a premium feature
 export async function canAccessPremiumFeatures() {
-  const { userId } = auth();
-  
+  const session = await auth();
+  const userId = session?.user?.id;
   if (!userId) {
     return false;
   }

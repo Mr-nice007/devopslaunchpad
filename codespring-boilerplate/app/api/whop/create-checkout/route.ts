@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { DEFAULT_REDIRECT_URL } from "../webhooks/utils/constants";
 
@@ -9,7 +9,8 @@ import { DEFAULT_REDIRECT_URL } from "../webhooks/utils/constants";
  */
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
     if (!userId) {
       return NextResponse.json(
         { error: "Unauthorized - You must be logged in" },

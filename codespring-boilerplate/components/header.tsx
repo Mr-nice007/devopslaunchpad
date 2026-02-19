@@ -6,7 +6,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { useSession, signOut } from "next-auth/react";
 import { Home, LayoutDashboard, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
+  const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -120,20 +121,20 @@ export default function Header() {
                 isActive={isActive("/")}
               />
 
-              <SignedIn>
+              {status === "authenticated" && (
                 <NavButton 
                   href="/dashboard" 
                   icon={<LayoutDashboard size={18} />} 
                   label="Dashboard"
                   isActive={isActive("/dashboard")}
                 />
-              </SignedIn>
+              )}
             </nav>
 
             {/* Right side actions */}
             <div className="flex items-center space-x-3">
-              <SignedOut>
-                <Link href="/login?redirect_url=/dashboard">
+              {status !== "authenticated" && (
+                <Link href="/auth/login?returnTo=/dashboard">
                   <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                     <Button 
                       variant="outline" 
@@ -157,9 +158,9 @@ export default function Header() {
                     </Button>
                   </motion.div>
                 </Link>
-              </SignedOut>
+              )}
 
-              <SignedIn>
+              {status === "authenticated" && (
                 <motion.div 
                   className="bg-white/80 p-0.5 rounded-full shadow-sm border border-white/80 relative"
                   whileHover={{ scale: 1.05 }}
@@ -179,17 +180,12 @@ export default function Header() {
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                   />
                   
-                  <UserButton 
-                    afterSignOutUrl="/"
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-full h-full rounded-full",
-                        avatarImage: "w-full h-full rounded-full object-cover"
-                      }
-                    }}
-                  />
+                  <Link href="/dashboard" className="flex items-center justify-center w-full h-full rounded-full bg-primary/20 text-primary font-medium text-sm">
+                    {(session?.user?.email ?? "U").charAt(0).toUpperCase()}
+                  </Link>
+                 
                 </motion.div>
-              </SignedIn>
+              )}
 
               {/* Mobile menu button */}
               <div className="md:hidden">
@@ -244,7 +240,7 @@ export default function Header() {
                   onClick={toggleMenu}
                 />
 
-                <SignedIn>
+                {status === "authenticated" && (
                   <MobileNavLink 
                     href="/dashboard" 
                     icon={<LayoutDashboard size={18} />} 
@@ -252,7 +248,7 @@ export default function Header() {
                     isActive={isActive("/dashboard")}
                     onClick={toggleMenu}
                   />
-                </SignedIn>
+                )}
               </div>
             </motion.nav>
           )}

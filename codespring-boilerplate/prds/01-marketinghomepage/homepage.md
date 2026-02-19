@@ -1,7 +1,7 @@
 # Marketing Homepage — PRD
 
 ## Objective
-Communicate value fast, enable free lesson previews, and drive conversion to paid access.
+Communicate value fast, enable a single course introduction video, and drive conversion to paid access.
 
 ## Audience
 Aspiring DevOps engineers, IT pros transitioning, junior devs.
@@ -20,7 +20,7 @@ Aspiring DevOps engineers, IT pros transitioning, junior devs.
 
 ### Value Props (3–4)
 - **Hands-on labs** — Practice in real environments, not just theory. Run commands, build pipelines, deploy to cloud.
-- **Real-world Projects** — Apply Git, Docker, Kubernetes, Terraform, and CI/CD in project-based labs that mirror industry workflows.
+- **Real-world Projects** — Apply Git, Docker, Kubernetes, Helm Charts, Terraform, and CI/CD in project-based labs that mirror industry workflows.
 - **Structured path** — From basics to deployment in a clear, step-by-step curriculum. No guesswork.
 - **Track progress** — See what you’ve completed and what’s next. Pick up where you left off.
 
@@ -31,11 +31,6 @@ Aspiring DevOps engineers, IT pros transitioning, junior devs.
 - **Typography:** Card title font-semibold, readable size; description text smaller, muted, with comfortable line-height (leading-relaxed).
 - **Layout:** Responsive grid (1 col mobile, 2 col tablet, 4 col desktop); even spacing (gap-6 or gap-8); cards equal height.
 - **Optional:** Numbered badges (01–04), or a short accent line under the section heading.
-
-### Course Overview
-- **Modules:** Git, Docker, Kubernetes, Helm Charts, Terraform, Ansible, CI/CD, Cloud Basics.
-- **Display:** Each module shows lesson count and which lessons are free preview (badges).
-- **Intro line:** "Build skills across the full DevOps stack. Select lessons in every module are free to preview."
 
 ### Testimonials
 - **Structure:** Quote, name, role/title, optional avatar placeholder.
@@ -51,14 +46,8 @@ Aspiring DevOps engineers, IT pros transitioning, junior devs.
 4. **Lifetime access** — One-time purchase includes future course updates and support.
 5. **Apply it** — Use your skills in real projects and interviews.
 
-### Pricing
-- **Headline:** "Simple pricing"
-- **Subhead:** "Unlock the full course and get lifetime access to all modules and updates."
-- **Teaser bullets:** One-time purchase · All 8 modules · Free preview lessons · Lifetime access · Support included
-- **CTA:** "View pricing" → /pricing
-
 ### FAQ (3–5)
-1. **What’s included in the free preview?** — You get access to selected lessons across all modules (Git, Docker, Kubernetes, Helm Charts, Terraform, Ansible, CI/CD, Cloud Basics) so you can try the format and content before buying.
+1. **What’s included in the free preview?** — You get access to one course introduction video so you can see the format and content before buying.
 2. **How do I unlock the full course?** — Click “Unlock Full Course” to go to pricing and complete checkout. You’ll get immediate access after payment.
 3. **Do I need prior DevOps experience?** — No. The course is designed for beginners and people transitioning into DevOps from development or IT.
 4. **What if I get stuck?** — Each lesson includes clear instructions and hints. Support is available for enrolled students.
@@ -73,13 +62,13 @@ Aspiring DevOps engineers, IT pros transitioning, junior devs.
 - **Subhead:** Build real skills with guided labs in Git, Docker, Kubernetes, Helm Charts, Terraform, Ansible, CI/CD, and Cloud Basics.
 - **CTA:** Start free preview
 
-## Free Preview Requirements
-- Lesson-level preview flag; accessible without enrollment
-- Preview player hides gated actions; inline upgrade CTA
+## Course Introduction Video
+- **Single video only:** One course introduction video, accessible without enrollment.
+- **Player:** Hides gated actions; inline upgrade CTA to unlock full course.
 
 ## Payments Integration
-- Unlock CTA → Stripe Checkout
-- Success/Cancel return URLs configured
+- Unlock Full Course CTA → pricing/checkout (pricing shown there); Stripe Checkout.
+- Success/Cancel return URLs configured.
 
 ## Analytics
 - `cta_start_preview`, `cta_unlock_full_course` events
@@ -94,11 +83,10 @@ Aspiring DevOps engineers, IT pros transitioning, junior devs.
 
 ## Acceptance Criteria
 - Hero renders with two CTAs; responsive on mobile/desktop
-- Course overview lists all 8 modules and marks preview lessons
-- Start Free Preview navigates to working preview lesson
+- Start Free Preview opens the single course introduction video
 - Unlock Full Course opens Stripe Checkout
 - Analytics events fire on CTA clicks
 - SEO tags present; basic lighthouse performance > 85
 - Testimonials section shows at least 3 placeholder quotes
 - How it Works shows 5 numbered steps
-- FAQ has at least 5 questions; pricing section includes teaser bullets
+- FAQ has at least 5 questions

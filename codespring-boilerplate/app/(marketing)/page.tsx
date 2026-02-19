@@ -9,14 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  FlaskConical,
-  GitBranch,
-  Layers,
-  Route,
-  BookOpen,
-  ChevronRight,
-} from "lucide-react";
+import { FlaskConical, GitBranch, Layers, Route } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { HomeHeroCtas } from "@/components/landing/home-hero-ctas";
@@ -56,17 +49,6 @@ const valueProps = [
   },
 ];
 
-const modules = [
-  { name: "Git", lessons: 5, previewLessons: [1] },
-  { name: "Docker", lessons: 5, previewLessons: [1, 2] },
-  { name: "Kubernetes", lessons: 6, previewLessons: [1] },
-  { name: "Helm Charts", lessons: 4, previewLessons: [1] },
-  { name: "Terraform", lessons: 5, previewLessons: [1] },
-  { name: "Ansible", lessons: 5, previewLessons: [1] },
-  { name: "CI/CD", lessons: 6, previewLessons: [1] },
-  { name: "Cloud Basics", lessons: 4, previewLessons: [1] },
-];
-
 const howItWorksSteps = [
   "Start free — Sign up and start the free preview. No credit card required.",
   "Learn by doing — Complete guided labs at your own pace. Practice in real environments.",
@@ -78,7 +60,7 @@ const howItWorksSteps = [
 const faqs = [
   {
     q: "What’s included in the free preview?",
-    a: "You get access to selected lessons across all modules (Git, Docker, Kubernetes, Helm Charts, Terraform, Ansible, CI/CD, Cloud Basics) so you can try the format and content before buying.",
+    a: "You get access to one course introduction video so you can see the format and content before buying.",
   },
   {
     q: "How do I unlock the full course?",
@@ -163,54 +145,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Course Overview */}
-      <section className="py-16 md:py-20 px-4 md:px-6 bg-background">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-10">
-            Course overview
-          </h2>
-          <p className="text-muted-foreground text-center mb-10">
-            Build skills across the full DevOps stack. Select lessons in every module are free to preview.
-          </p>
-          <div className="space-y-4">
-            {modules.map((mod) => (
-              <Card key={mod.name}>
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <BookOpen className="h-5 w-5 text-muted-foreground" />
-                      {mod.name}
-                    </CardTitle>
-                    <span className="text-sm text-muted-foreground">
-                      {mod.lessons} lessons
-                    </span>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {Array.from({ length: mod.lessons }, (_, i) => i + 1).map(
-                      (n) => (
-                        <span
-                          key={n}
-                          className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ${
-                            mod.previewLessons.includes(n)
-                              ? "bg-primary/10 text-primary"
-                              : "bg-muted text-muted-foreground"
-                          }`}
-                        >
-                          Lesson {n}
-                          {mod.previewLessons.includes(n) && " (Free preview)"}
-                        </span>
-                      )
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials */}
       <section className="py-16 md:py-20 px-4 md:px-6 bg-muted/20">
         <div className="container mx-auto max-w-5xl">
@@ -276,30 +210,6 @@ export default function HomePage() {
               );
             })}
           </ol>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section className="py-16 md:py-20 px-4 md:px-6 bg-muted/20">
-        <div className="container mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Simple pricing</h2>
-          <p className="text-muted-foreground mb-6">
-            Unlock the full course and get lifetime access to all modules and updates.
-          </p>
-          <ul className="text-sm text-muted-foreground mb-8 space-y-2 flex flex-col items-center">
-            <li>One-time purchase</li>
-            <li>All 8 modules</li>
-            <li>Free preview lessons</li>
-            <li>Lifetime access</li>
-            <li>Support included</li>
-          </ul>
-          <Link
-            href="/pricing"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-          >
-            View pricing
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Link>
         </div>
       </section>
 

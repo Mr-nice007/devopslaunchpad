@@ -4,7 +4,7 @@ import { createProfile, deleteProfile, getAllProfiles, getProfileByUserId, updat
 import { InsertProfile, SelectProfile } from "@/db/schema/profiles-schema";
 import { ActionResult } from "@/types/actions/actions-types";
 import { revalidatePath } from "next/cache";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 
 export async function createProfileAction(data: InsertProfile): Promise<ActionResult<SelectProfile>> {
   try {
@@ -61,7 +61,8 @@ export async function deleteProfileAction(userId: string): Promise<ActionResult<
  */
 export async function checkPaymentFailedAction(): Promise<{ paymentFailed: boolean }> {
   try {
-    const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
     
     if (!userId) {
       return { paymentFailed: false };
@@ -90,7 +91,8 @@ export async function getUserPlanInfoAction(): Promise<ActionResult<{
   nextCreditRenewal: Date | null;
 } | null>> {
   try {
-    const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
     
     if (!userId) {
       return { 

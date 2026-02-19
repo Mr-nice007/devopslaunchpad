@@ -15,7 +15,7 @@ import { SelectProfile } from "@/db/schema/profiles-schema";
 import { useRouter, useSearchParams } from "next/navigation";
 import confetti from 'canvas-confetti';
 import { getProfileByUserIdAction } from "@/actions/profiles-actions";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 
 interface PaymentSuccessPopupProps {
   profile: SelectProfile;
@@ -40,7 +40,8 @@ export default function PaymentSuccessPopup({ profile: initialProfile }: Payment
   });
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { userId } = useAuth();
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   
   // Function to refresh profile data using server action
   const refreshProfileData = async () => {

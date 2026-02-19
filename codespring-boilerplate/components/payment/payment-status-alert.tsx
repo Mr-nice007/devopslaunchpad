@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { checkPaymentFailedAction } from "@/actions/profiles-actions";
 
 /**
@@ -17,7 +17,8 @@ export function PaymentStatusAlert() {
   const [hasPaymentFailed, setHasPaymentFailed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
-  const { userId } = useAuth();
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   
   // Don't show on pricing page to avoid redundancy
   const isVisible = pathname !== "/pricing";

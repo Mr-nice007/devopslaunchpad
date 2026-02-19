@@ -1,17 +1,19 @@
 /**
  * Dashboard layout for Template App
  * This layout removes the global header from all dashboard pages
- * and applies the dashboard-specific styling
+ * and applies the dashboard-specific styling.
+ * Uses Auth.js session; gates on email verification.
  */
 import React, { ReactNode } from "react";
 import { getProfileByUserId, updateProfile } from "@/db/queries/profiles-queries";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Sidebar from "@/components/sidebar";
 import { revalidatePath } from "next/cache";
 import CancellationPopup from "@/components/cancellation-popup";
 import WelcomeMessagePopup from "@/components/welcome-message-popup";
 import PaymentSuccessPopup from "@/components/payment-success-popup";
+import { VerificationBanner } from "@/components/auth/verification-banner";
 
 /**
  * Check if a free user with an expired billing cycle needs their credits downgraded
@@ -62,30 +64,28 @@ async function checkExpiredSubscriptionCredits(profile: any | null): Promise<any
 }
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
-  // Fetch user profile once at the layout level
-  const { userId } = auth();
+  const session = await auth();
+  const userId = session?.user?.id;
 
   if (!userId) {
-    return redirect("/login");
+    return redirect("/auth/login");
   }
 
   let profile = await getProfileByUserId(userId);
 
   if (!profile) {
-    return redirect("/signup");
+    return redirect("/auth/signup");
   }
 
   // Run just-in-time credit check for expired subscriptions
   profile = await checkExpiredSubscriptionCredits(profile);
-  
-  // Verify profile is still valid after check
+
   if (!profile) {
-    return redirect("/signup");
+    return redirect("/auth/signup");
   }
 
-  // Get the current user to extract email
-  const user = await currentUser();
-  const userEmail = user?.emailAddresses?.[0]?.emailAddress || "";
+  const userEmail = session?.user?.email ?? "";
+  const emailVerified = session?.user?.emailVerified != null;
   
   // Log profile details for debugging
   console.log('Dashboard profile:', {
@@ -97,28 +97,31 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   return (
     <div className="flex h-screen bg-gray-50 relative overflow-hidden">
-      {/* Show welcome message popup - component handles visibility logic */}
+      {!emailVerified && (
+        <VerificationBanner email={userEmail} />
+      )}
       <WelcomeMessagePopup profile={profile} />
-      
-      {/* Show payment success popup - component handles visibility logic */}
       <PaymentSuccessPopup profile={profile} />
-      
-      {/* Show cancellation popup directly if status is canceled */}
       {profile.status === "canceled" && (
         <CancellationPopup profile={profile} />
       )}
-      
-      {/* Sidebar component with profile data and user email */}
-      <Sidebar 
-        profile={profile} 
-        userEmail={userEmail} 
-        whopMonthlyPlanId={process.env.WHOP_PLAN_ID_MONTHLY || ''}
-        whopYearlyPlanId={process.env.WHOP_PLAN_ID_YEARLY || ''}
+      <Sidebar
+        profile={profile}
+        userEmail={userEmail}
+        whopMonthlyPlanId={process.env.WHOP_PLAN_ID_MONTHLY || ""}
+        whopYearlyPlanId={process.env.WHOP_PLAN_ID_YEARLY || ""}
       />
-      
-      {/* Main content area */}
       <div className="flex-1 overflow-auto relative">
-        {children}
+        {!emailVerified ? (
+          <div className="p-6 flex flex-col items-center justify-center min-h-[50vh] text-center">
+            <p className="text-muted-foreground mb-4">
+              Please verify your email to access the dashboard.
+            </p>
+            <VerificationBanner email={userEmail} inline />
+          </div>
+        ) : (
+          <>{children}</>
+        )}
       </div>
     </div>
   );

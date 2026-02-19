@@ -8,7 +8,7 @@
 import { Home, Settings, Database, Target, Users, Sparkles, CreditCard } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
+import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { SelectProfile } from "@/db/schema/profiles-schema";
@@ -238,27 +238,23 @@ export default function Sidebar({ profile, userEmail, whopMonthlyPlanId, whopYea
           {/* User Profile Section */}
           <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
           <motion.div 
-            className="flex items-center px-3 py-3 hover:bg-white/50 rounded-lg mx-2 cursor-pointer"
-            whileHover={{ 
-              scale: 1.02,
-              transition: { duration: 0.2 }
-            }}
+            className="flex items-center px-3 py-3 hover:bg-white/50 rounded-lg mx-2"
+            whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
             whileTap={{ scale: 0.98 }}
           >
-            <div className="w-7 h-7 rounded-full overflow-hidden border border-white/80 flex items-center justify-center bg-white/80 shadow-sm">
-              <UserButton 
-                afterSignOutUrl="/"
-                appearance={{
-                  elements: {
-                    userButtonAvatarBox: "w-7 h-7",
-                    userButtonTrigger: "w-7 h-7 rounded-full"
-                  }
-                }} 
-              />
+            <div className="w-7 h-7 rounded-full overflow-hidden border border-white/80 flex items-center justify-center bg-white/80 shadow-sm text-xs font-medium text-gray-600">
+              {(userEmail || "A").charAt(0).toUpperCase()}
             </div>
             <span className="text-xs text-gray-600 hidden md:block ml-3 font-medium truncate max-w-[120px]">
               {userEmail || "Account"}
             </span>
+            <button
+              type="button"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="ml-auto hidden md:block text-xs text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring rounded px-1"
+            >
+              Sign out
+            </button>
           </motion.div>
         </div>
       </div>

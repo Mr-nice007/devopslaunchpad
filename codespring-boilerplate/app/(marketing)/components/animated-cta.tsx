@@ -33,7 +33,7 @@ export default function AnimatedCTA() {
             View Documentation
           </Button>
           <SignedOut>
-            <Link href="/login?redirect_url=/dashboard">
+            <Link href="/auth/login?returnTo=/dashboard">
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Button 
                   variant="outline" 
