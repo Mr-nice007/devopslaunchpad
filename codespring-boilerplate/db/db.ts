@@ -9,6 +9,13 @@ import {
   verificationTokensTable,
   authTokensTable,
 } from "./schema/auth-schema";
+import {
+  coursesTable,
+  courseModulesTable,
+  lessonsTable,
+  enrollmentsTable,
+  userLessonProgressTable,
+} from "./schema/dashboard-schema";
 
 // Define the schema properly
 const schema = {
@@ -19,6 +26,11 @@ const schema = {
   accounts: accountsTable,
   verificationTokens: verificationTokensTable,
   authTokens: authTokensTable,
+  courses: coursesTable,
+  courseModules: courseModulesTable,
+  lessons: lessonsTable,
+  enrollments: enrollmentsTable,
+  userLessonProgress: userLessonProgressTable,
 };
 
 // Add connection options with improved timeout and retry settings for Vercel environment

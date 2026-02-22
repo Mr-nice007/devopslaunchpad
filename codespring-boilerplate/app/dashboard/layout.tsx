@@ -5,7 +5,7 @@
  * Uses Auth.js session; gates on email verification.
  */
 import React, { ReactNode } from "react";
-import { getProfileByUserId, updateProfile } from "@/db/queries/profiles-queries";
+import { getProfileByUserId, updateProfile, createProfile } from "@/db/queries/profiles-queries";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import Sidebar from "@/components/sidebar";
@@ -74,6 +74,25 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   let profile = await getProfileByUserId(userId);
 
   if (!profile) {
+    try {
+      await createProfile({
+        userId,
+        email: session?.user?.email ?? undefined,
+      });
+      profile = await getProfileByUserId(userId);
+    } catch (e: unknown) {
+      const isDuplicateKey =
+        e && typeof e === "object" && "code" in e && (e as { code: string }).code === "23505";
+      if (isDuplicateKey) {
+        profile = await getProfileByUserId(userId);
+      }
+      if (!profile) {
+        console.error("[dashboard] Failed to create profile:", e);
+      }
+    }
+  }
+
+  if (!profile) {
     return redirect("/auth/signup");
   }
 
@@ -112,16 +131,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         whopYearlyPlanId={process.env.WHOP_PLAN_ID_YEARLY || ""}
       />
       <div className="flex-1 overflow-auto relative">
-        {!emailVerified ? (
-          <div className="p-6 flex flex-col items-center justify-center min-h-[50vh] text-center">
-            <p className="text-muted-foreground mb-4">
-              Please verify your email to access the dashboard.
-            </p>
-            <VerificationBanner email={userEmail} inline />
-          </div>
-        ) : (
-          <>{children}</>
-        )}
+        {children}
       </div>
     </div>
   );

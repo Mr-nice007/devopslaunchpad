@@ -54,7 +54,11 @@ export default function LoginPage() {
         return;
       }
       if (result?.error || !result?.ok) {
-        setError("Invalid email or password.");
+        const message =
+          process.env.NODE_ENV === "development" && result?.error
+            ? `Invalid email or password. (${result.error})`
+            : "Invalid email or password.";
+        setError(message);
         setLoading(false);
         return;
       }
